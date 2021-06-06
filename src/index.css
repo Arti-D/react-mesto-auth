@@ -29,6 +29,13 @@
 @import url(./blocks/elems/__remove-btn/elems__remove-btn.css);
 @import url(./blocks/elems/__remove-btn/elems__remove-btn_visible.css);
 @import url(./blocks/elems/__remove-btn/elems__remove-btn_hidden.css);
+@import url(./blocks/form/form.css);
+@import url(./blocks/form/__content/form__content.css);
+@import url(./blocks/form/__link/form__link.css);
+@import url(./blocks/form/__question/form__question.css);
+@import url(./blocks/form/__input/form__input.css);
+@import url(./blocks/form/__submit-btn/form__submit-btn.css);
+@import url(./blocks/form/__title/form__title.css);
 @import url(./blocks/footer/footer.css);
 @import url(./blocks/footer/__copyright/footer__copyright.css);
 @import url(./blocks/popup/popup.css);
