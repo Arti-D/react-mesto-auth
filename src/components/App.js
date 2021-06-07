@@ -1,5 +1,11 @@
 import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  Redirect,
+  withRouter,
+  useHistory,
+} from "react-router-dom";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Login from "./Login.js";
@@ -14,14 +20,16 @@ import InfoTooltip from "./InfoTooltip.js";
 import api from "../utils/api.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import ProtectedRoute from "./ProtectedRoute.js";
+import * as auth from "../utils/auth.js";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [registerStatus, setRegisterStatus] = React.useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false); // попап регистрации
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(true); // попап регистрации
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setUserInfo] = React.useState({});
 
@@ -45,9 +53,7 @@ function App() {
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
   }
-  function handleInfoTooltipDone() {
-    setIsInfoTooltipOpen(true);
-  }
+
   function handleCardClick(data) {
     setSelectedCard(data);
   }
@@ -56,6 +62,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsInfoTooltipOpen(false);
     setSelectedCard(null);
   }
 
@@ -134,7 +141,29 @@ function App() {
   }
 
   // РАБОТА С АВТОРИЗАЦИЕЙ
+
+  const history = useHistory();
+
   const [loggedIn, setLoggedIn] = React.useState(false);
+
+  // РЕГИСТРАЦИЯ
+
+  function handleRegistration(password, email) {
+    console.log(password, email);
+    auth
+      .register(password, email)
+      .then((res) => {
+        setIsInfoTooltipOpen(true);
+        setRegisterStatus(true)
+        console.log(res);
+        // history.push('/sign-in')
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsInfoTooltipOpen(true)
+        setRegisterStatus(false)
+      });
+  }
 
   return (
     <div className="page">
@@ -144,8 +173,8 @@ function App() {
           <Route path="/sign-in">
             <Login />
           </Route>
-          <Route path="/sign-up">
-            <Register />
+          <Route path="/sign-up" isOpen={isInfoTooltipOpen}>
+            <Register onSubmit={handleRegistration} />
           </Route>
           <ProtectedRoute
             path="/"
@@ -160,9 +189,9 @@ function App() {
             onCardDelete={handleCardDelete}
           ></ProtectedRoute>
         </Switch>
-        
-        {loggedIn && <Footer />}
 
+        {loggedIn && <Footer />}
+        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} status={registerStatus}/>
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
@@ -192,4 +221,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);

@@ -12,7 +12,7 @@ function PopupWithForm(props) {
           onSubmit={props.onSubmit}
         >
           {props.children}
-          <button className="popup__btn popup-avatar__make-btn" type="submit">
+          <button className={`popup__btn popup__btn-${props.name}`} type="submit">
             {props.buttonText}
           </button>
         </form>

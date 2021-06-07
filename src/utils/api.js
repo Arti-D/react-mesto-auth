@@ -88,7 +88,6 @@ const config = {
   url: "https://mesto.nomoreparties.co/v1/cohort-22",
   headers: {
     authorization: "ecd44a5f-5259-4858-9be5-8f874f37b67e",
-    // authorization: "7d190d24-45cc-41a1-907b-c30a1fbc5d49",
     "Content-type": "application/json",
   },
 };
