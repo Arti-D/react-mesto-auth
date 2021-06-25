@@ -28,7 +28,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
-  
+
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setUserInfo] = React.useState({});
 
@@ -147,7 +147,7 @@ function App() {
 
   const history = useHistory();
 
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
 
   // РЕГИСТРАЦИЯ
 
@@ -171,7 +171,7 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isIn={loggedIn} />
+        <Header isIn={loggedIn} email=""/> {/*ВСТАВИТЬ ПЕРЕМЕННУЮ EMAIL*/}
         <Switch>
           <Route path="/sign-in">
             <Login />
