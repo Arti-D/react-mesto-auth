@@ -26,12 +26,15 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [registerStatus, setRegisterStatus] = React.useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(true); // попап регистрации
+  
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setUserInfo] = React.useState({});
+
+  // ПЕРЕМЕННЫЕ РЕГИСТРАЦИИ 
+  const [registerStatus, setRegisterStatus] = React.useState(true) // статус регистрации
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(true); // попап регистрации
 
   React.useEffect(() => {
     api

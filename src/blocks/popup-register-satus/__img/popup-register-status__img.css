@@ -1,0 +1,15 @@
+.popup-register-status__img {
+    margin: 0;
+    width: 120px;
+    height: 120px;
+    margin: auto;
+}
+
+.popup-register-status__img_ok {
+    background-image: url(../../../images/ok_Icon.svg);
+}
+
+.popup-register-status__img_wrong {
+    background-image: url(../../../images/Union.svg);
+}
+
