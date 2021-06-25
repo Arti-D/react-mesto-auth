@@ -20,8 +20,8 @@ function Register(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(password);
-    console.log(email);
+    // console.log(password);
+    // console.log(email);
     props.onSubmit(password, email);
   }
 

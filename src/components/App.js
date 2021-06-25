@@ -33,8 +33,8 @@ function App() {
   const [currentUser, setUserInfo] = React.useState({});
 
   // ПЕРЕМЕННЫЕ РЕГИСТРАЦИИ 
-  const [registerStatus, setRegisterStatus] = React.useState(true) // статус регистрации
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(true); // попап регистрации
+  const [registerStatus, setRegisterStatus] = React.useState(false) // статус регистрации
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false); // попап регистрации
 
   React.useEffect(() => {
     api
@@ -147,7 +147,7 @@ function App() {
 
   const history = useHistory();
 
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   // РЕГИСТРАЦИЯ
 
@@ -159,7 +159,7 @@ function App() {
         setIsInfoTooltipOpen(true);
         setRegisterStatus(true)
         console.log(res);
-        // history.push('/sign-in')
+        history.push('/sign-in')
       })
       .catch((err) => {
         console.log(err);
@@ -192,8 +192,8 @@ function App() {
             onCardDelete={handleCardDelete}
           ></ProtectedRoute>
         </Switch>
-
-        {loggedIn && <Footer />}
+        
+        <Footer />
         <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} status={registerStatus}/>
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
