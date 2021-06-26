@@ -1,9 +1,15 @@
 import logoPath from "../logo.svg";
 import { useLocation, Link } from "react-router-dom";
+import React from "react";
 
 function Header(props) {
-  // написать функцию обработки нажатия на ВЫЙТИ
   const location = useLocation();
+
+
+  function signOut() {
+    props.onSignOut()
+  }
+  
   return (
     <header className="header">
       <a
@@ -17,7 +23,7 @@ function Header(props) {
       {location.pathname === '/sign-up' && <Link to="/sign-in" className="header__link">Войти</Link>}
       {props.isIn && <div className="header__wrapp">
         <p className="header__email">{props.email}</p>
-        <a className="header__link">Выйти</a>
+        <button onClick={signOut} className="header__button header__link">Выйти</button>
       </div>}
     </header>
   );

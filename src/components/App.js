@@ -186,6 +186,15 @@ function App() {
       });
     }
   }
+
+  // ВЫХОД ИЗ ПРОФИЛЯ
+
+  function handleSignOut() {
+    localStorage.removeItem("jwt");
+    history.push("/sign-in");
+    setLoggedIn(false)
+    setCurrentUserEmail("")
+  }
   // РЕГИСТРАЦИЯ
 
   function handleRegistration(password, email) {
@@ -208,7 +217,7 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isIn={loggedIn} email={currentUserEmail} />
+        <Header isIn={loggedIn} email={currentUserEmail} onSignOut={handleSignOut}/>
         <Switch>
           <Route path="/sign-in">
             <Login onSubmit={handleAuthorization} />
