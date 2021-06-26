@@ -32,9 +32,10 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setUserInfo] = React.useState({});
 
-  // ПЕРЕМЕННЫЕ РЕГИСТРАЦИИ 
-  const [registerStatus, setRegisterStatus] = React.useState(false) // статус регистрации
+  // ПЕРЕМЕННЫЕ РЕГИСТРАЦИИ
+  const [registerStatus, setRegisterStatus] = React.useState(false); // статус регистрации
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false); // попап регистрации
+  const [currentUserEmail, setCurrentUserEmail] = React.useState("")
 
   React.useEffect(() => {
     api
@@ -45,6 +46,12 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
+  // ПРОВЕРКА ТОКЕНА ПЕРЕД РЕНДЕРОМ СТРАНИЦЫ
+  React.useEffect(() => {
+    checkToken();
+  }, []);
+
+ 
   // РАБОТА С ПОПАПАМИ
 
   function handleEditAvatarClick() {
@@ -83,6 +90,7 @@ function App() {
     api
       .newAvatar(avatar)
       .then((res) => {
+        console.log(res);
         setUserInfo(res);
         closeAllPopups();
       })
@@ -149,6 +157,23 @@ function App() {
 
   const [loggedIn, setLoggedIn] = React.useState(false);
 
+  function handleAuthorization(password, email) {
+    auth
+      .authorize(password, email)
+      .then((data) => {
+        if(data.token) {
+          console.log(`токен пришел все ок ${data.token}`);
+          setLoggedIn(true)
+          history.push("/")
+          setCurrentUserEmail(email)
+          console.log(currentUserEmail);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   // РЕГИСТРАЦИЯ
 
   function handleRegistration(password, email) {
@@ -157,24 +182,24 @@ function App() {
       .register(password, email)
       .then((res) => {
         setIsInfoTooltipOpen(true);
-        setRegisterStatus(true)
+        setRegisterStatus(true);
         console.log(res);
-        history.push('/sign-in')
+        history.push("/sign-in");
       })
       .catch((err) => {
         console.log(err);
-        setIsInfoTooltipOpen(true)
-        setRegisterStatus(false)
+        setIsInfoTooltipOpen(true);
+        setRegisterStatus(false);
       });
   }
 
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isIn={loggedIn} email=""/> {/*ВСТАВИТЬ ПЕРЕМЕННУЮ EMAIL*/}
+        <Header isIn={loggedIn} email={currentUserEmail} /> 
         <Switch>
           <Route path="/sign-in">
-            <Login />
+            <Login onSubmit={handleAuthorization}/>
           </Route>
           <Route path="/sign-up" isOpen={isInfoTooltipOpen}>
             <Register onSubmit={handleRegistration} />
@@ -192,27 +217,27 @@ function App() {
             onCardDelete={handleCardDelete}
           ></ProtectedRoute>
         </Switch>
-        
         <Footer />
-        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} status={registerStatus}/>
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          onClose={closeAllPopups}
+          status={registerStatus}
+        />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
         ></EditAvatarPopup>
-
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={onAddPlace}
         ></AddPlacePopup>
-
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
         ></EditProfilePopup>
-
         <PopupWithForm title="Вы уверены?" name="sure">
           <button className="popup__btn popup-sure__btn" type="button">
             Да

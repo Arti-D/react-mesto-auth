@@ -6,8 +6,7 @@ import * as auth from "../utils/auth.js";
 function Register(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [registerMessage, setRegisterMessage] = React.useState("");
-
+  
   function handleChangeEmail(e) {
     setEmail(e.target.value);
     console.log(email);
