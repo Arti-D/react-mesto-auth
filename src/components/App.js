@@ -35,7 +35,7 @@ function App() {
   // ПЕРЕМЕННЫЕ РЕГИСТРАЦИИ
   const [registerStatus, setRegisterStatus] = React.useState(false); // статус регистрации
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false); // попап регистрации
-  const [currentUserEmail, setCurrentUserEmail] = React.useState("")
+  const [currentUserEmail, setCurrentUserEmail] = React.useState("");
 
   React.useEffect(() => {
     api
@@ -51,7 +51,6 @@ function App() {
     checkToken();
   }, []);
 
- 
   // РАБОТА С ПОПАПАМИ
 
   function handleEditAvatarClick() {
@@ -161,11 +160,11 @@ function App() {
     auth
       .authorize(password, email)
       .then((data) => {
-        if(data.token) {
+        if (data.token) {
           console.log(`токен пришел все ок ${data.token}`);
-          setLoggedIn(true)
-          history.push("/")
-          setCurrentUserEmail(email)
+          setLoggedIn(true);
+          history.push("/");
+          setCurrentUserEmail(email);
           console.log(currentUserEmail);
         }
       })
@@ -173,7 +172,20 @@ function App() {
         console.log(err);
       });
   }
+  // ФУНКЦИЯ ПРОВЕРКИ ТОКЕНА
 
+  function checkToken() {
+    if (localStorage.getItem("jwt")) {
+      const jwt = localStorage.getItem("jwt");
+      auth.checkToken(jwt).then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          history.push("/");
+          setCurrentUserEmail(res.data.email)
+        }
+      });
+    }
+  }
   // РЕГИСТРАЦИЯ
 
   function handleRegistration(password, email) {
@@ -196,10 +208,10 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isIn={loggedIn} email={currentUserEmail} /> 
+        <Header isIn={loggedIn} email={currentUserEmail} />
         <Switch>
           <Route path="/sign-in">
-            <Login onSubmit={handleAuthorization}/>
+            <Login onSubmit={handleAuthorization} />
           </Route>
           <Route path="/sign-up" isOpen={isInfoTooltipOpen}>
             <Register onSubmit={handleRegistration} />
