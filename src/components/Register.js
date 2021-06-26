@@ -1,26 +1,20 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
-
-import * as auth from "../utils/auth.js";
+import { Link } from "react-router-dom";
 
 function Register(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  
+
   function handleChangeEmail(e) {
     setEmail(e.target.value);
-    console.log(email);
   }
 
   function handleChangePassword(e) {
     setPassword(e.target.value);
-    console.log(password);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    // console.log(password);
-    // console.log(email);
     props.onSubmit(password, email);
   }
 
@@ -52,7 +46,6 @@ function Register(props) {
           </span>
         </form>
       </div>
-      
     </>
   );
 }

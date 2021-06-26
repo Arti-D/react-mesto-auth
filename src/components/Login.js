@@ -5,11 +5,8 @@ function Login(props) {
   const [password, setPassword] = React.useState("");
 
   function handleSubmit(e) {
-    console.log("LoginSubmit");
     e.preventDefault();
     props.onSubmit(password, email);
-    // setPassword("");
-    // setEmail("");
   }
   function handleChangeEmail(e) {
     setEmail(e.target.value);

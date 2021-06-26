@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Route,
-  Switch,
-  Redirect,
-  withRouter,
-  useHistory,
-} from "react-router-dom";
+import { Route, Switch, withRouter, useHistory } from "react-router-dom";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Login from "./Login.js";
@@ -89,7 +83,6 @@ function App() {
     api
       .newAvatar(avatar)
       .then((res) => {
-        console.log(res);
         setUserInfo(res);
         closeAllPopups();
       })
@@ -161,11 +154,9 @@ function App() {
       .authorize(password, email)
       .then((data) => {
         if (data.token) {
-          console.log(`токен пришел все ок ${data.token}`);
           setLoggedIn(true);
           history.push("/");
           setCurrentUserEmail(email);
-          console.log(currentUserEmail);
         }
       })
       .catch((err) => {
@@ -181,7 +172,7 @@ function App() {
         if (res) {
           setLoggedIn(true);
           history.push("/");
-          setCurrentUserEmail(res.data.email)
+          setCurrentUserEmail(res.data.email);
         }
       });
     }
@@ -192,8 +183,8 @@ function App() {
   function handleSignOut() {
     localStorage.removeItem("jwt");
     history.push("/sign-in");
-    setLoggedIn(false)
-    setCurrentUserEmail("")
+    setLoggedIn(false);
+    setCurrentUserEmail("");
   }
   // РЕГИСТРАЦИЯ
 
@@ -217,7 +208,11 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isIn={loggedIn} email={currentUserEmail} onSignOut={handleSignOut}/>
+        <Header
+          isIn={loggedIn}
+          email={currentUserEmail}
+          onSignOut={handleSignOut}
+        />
         <Switch>
           <Route path="/sign-in">
             <Login onSubmit={handleAuthorization} />
