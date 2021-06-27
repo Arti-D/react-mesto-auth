@@ -19,7 +19,6 @@ function Register(props) {
   }
 
   return (
-    <>
       <div className="form">
         <h2 className="form__title">Регистрация</h2>
         <form className="form__content" onSubmit={handleSubmit}>
@@ -46,7 +45,6 @@ function Register(props) {
           </span>
         </form>
       </div>
-    </>
   );
 }
 

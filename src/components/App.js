@@ -27,15 +27,19 @@ function App() {
   const [currentUser, setUserInfo] = React.useState({});
 
   // ПЕРЕМЕННЫЕ РЕГИСТРАЦИИ
-  const [registerStatus, setRegisterStatus] = React.useState(false); // статус регистрации
+  const [isRegisterSuccess, setIsRegisterSuccess] = React.useState(false); // статус регистрации
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false); // попап регистрации
   const [currentUserEmail, setCurrentUserEmail] = React.useState("");
 
+  // CARDS
+  const [cards, setCards] = React.useState([]);
+
   React.useEffect(() => {
     api
-      .getUserInfo()
-      .then((userData) => {
-        setUserInfo(userData);
+      .getAllInfo()
+      .then((data) => {
+        setUserInfo(data[0]);
+        setCards(data[1]);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -88,18 +92,6 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
-
-  // работа с карточками
-
-  const [cards, setCards] = React.useState([]);
-  React.useEffect(() => {
-    api
-      .getCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   function handleCardDelete(card) {
     api
@@ -168,13 +160,16 @@ function App() {
   function checkToken() {
     if (localStorage.getItem("jwt")) {
       const jwt = localStorage.getItem("jwt");
-      auth.checkToken(jwt).then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          history.push("/");
-          setCurrentUserEmail(res.data.email);
-        }
-      });
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            history.push("/");
+            setCurrentUserEmail(res.data.email);
+          }
+        })
+        .catch((err) => console.log(err));
     }
   }
 
@@ -189,19 +184,19 @@ function App() {
   // РЕГИСТРАЦИЯ
 
   function handleRegistration(password, email) {
-    console.log(password, email);
     auth
       .register(password, email)
       .then((res) => {
-        setIsInfoTooltipOpen(true);
-        setRegisterStatus(true);
+        setIsRegisterSuccess(true);
         console.log(res);
         history.push("/sign-in");
       })
       .catch((err) => {
         console.log(err);
+        setIsRegisterSuccess(false);
+      })
+      .finally(() => {
         setIsInfoTooltipOpen(true);
-        setRegisterStatus(false);
       });
   }
 
@@ -237,7 +232,7 @@ function App() {
         <InfoTooltip
           isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
-          status={registerStatus}
+          status={isRegisterSuccess}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}

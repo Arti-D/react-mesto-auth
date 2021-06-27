@@ -12,7 +12,7 @@ function Header(props) {
   return (
     <header className="header">
       <a
-        href="https://github.com/Arti-D/mesto-react"
+        href="https://github.com/Arti-D/react-mesto-auth"
         target="_blank"
         className="header__logo-link"
         rel="noreferrer"
