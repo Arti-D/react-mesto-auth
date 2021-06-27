@@ -2,17 +2,28 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm.js";
 
 function AddPlacePopup(props) {
-  const placeName = React.useRef();
-  const placeLink = React.useRef();
+  const [placeName, setPlaceName] = React.useState("");
+  const [placeLink, setPlaceLink] = React.useState("");
+
+  React.useEffect(() => {
+    setPlaceLink("");
+    setPlaceName("");
+  }, [props.isOpen]);
+
+  function handlePlaceName(e) {
+    setPlaceName(e.target.value);
+  }
+
+  function handlePlaceLink(e) {
+    setPlaceLink(e.target.value);
+  }
 
   function handleAddPlaceSubmit(e) {
     e.preventDefault();
     props.onAddPlace({
-      name: placeName.current.value,
-      link: placeLink.current.value,
+      name: placeName,
+      link: placeLink,
     });
-    placeName.current.value = '';
-    placeLink.current.value = '';
   }
 
   return (
@@ -22,7 +33,7 @@ function AddPlacePopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleAddPlaceSubmit}
-      buttonText='Сохранить'
+      buttonText="Сохранить"
     >
       <input
         id="img-title-input"
@@ -33,7 +44,8 @@ function AddPlacePopup(props) {
         maxLength="30"
         minLength="2"
         autoComplete="off"
-        ref={placeName}
+        onChange={handlePlaceName}
+        value={placeName}
       />
       <span id="img-title-input-error" className="error"></span>
       <input
@@ -44,7 +56,8 @@ function AddPlacePopup(props) {
         placeholder="Ссылка на картинку"
         autoComplete="off"
         required
-        ref={placeLink}
+        onChange={handlePlaceLink}
+        value={placeLink}
       />
       <span id="img-link-input-error" className="error"></span>
     </PopupWithForm>
