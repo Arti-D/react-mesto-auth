@@ -4,7 +4,7 @@ function PopupWithForm(props) {
       className={`popup popup-${props.name} ${props.isOpen && "popup_opened"}`}
     >
       <div className="popup__content">
-        <h2 className={`popup__title${props.isRegister ? '_register' : ''}`}>{props.title}</h2>
+        <h2 className="popup__title">{props.title}</h2>
         <form
           name={props.name}
           className={`popup__form popup__form_${props.name}`}

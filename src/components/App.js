@@ -37,9 +37,9 @@ function App() {
   React.useEffect(() => {
     api
       .getAllInfo()
-      .then((data) => {
-        setUserInfo(data[0]);
-        setCards(data[1]);
+      .then(([userData, cards]) => {
+        setUserInfo(userData);
+        setCards(cards);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -204,7 +204,7 @@ function App() {
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <Header
-          isIn={loggedIn}
+          isLoggedIn={loggedIn}
           email={currentUserEmail}
           onSignOut={handleSignOut}
         />
@@ -232,7 +232,7 @@ function App() {
         <InfoTooltip
           isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
-          status={isRegisterSuccess}
+          isSuccessStatus={isRegisterSuccess}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
@@ -249,11 +249,6 @@ function App() {
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
         ></EditProfilePopup>
-        <PopupWithForm title="Вы уверены?" name="sure">
-          <button className="popup__btn popup-sure__btn" type="button">
-            Да
-          </button>
-        </PopupWithForm>
         <ImagePopup card={selectedCard} onClose={closeAllPopups}></ImagePopup>
       </CurrentUserContext.Provider>
     </div>

@@ -3,6 +3,7 @@
     width: 120px;
     height: 120px;
     margin: auto;
+    margin-top: 24px;
 }
 
 .popup-register-status__img_ok {

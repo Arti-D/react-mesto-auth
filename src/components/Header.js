@@ -29,7 +29,7 @@ function Header(props) {
           Войти
         </Link>
       )}
-      {props.isIn && (
+      {props.isLoggedIn && (
         <div className="header__wrapp">
           <p className="header__email">{props.email}</p>
           <button onClick={signOut} className="header__button header__link">
