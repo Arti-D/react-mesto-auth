@@ -5,7 +5,6 @@ import Main from "./Main.js";
 import Login from "./Login.js";
 import Register from "./Register.js";
 import Footer from "./Footer.js";
-import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
@@ -15,6 +14,7 @@ import api from "../utils/api.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import * as auth from "../utils/auth.js";
+// import { updateAvatar } from "../../../react-mesto-api-full/backend/controllers/users.js";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -35,20 +35,31 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
+    checkToken();
+    updateUserInfo();
+  }, []);
+
+  function checkToken() {
+    auth
+      .checkToken()
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          history.push("/");
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+  function updateUserInfo() {
     api
       .getAllInfo()
       .then(([userData, cards]) => {
-        setUserInfo(userData);
-        setCards(cards);
+        setUserInfo(userData.data);
+        setCards(cards.data);
+        setCurrentUserEmail(userData.data.email);
       })
       .catch((err) => console.log(err));
-  }, []);
-
-  // ПРОВЕРКА ТОКЕНА ПЕРЕД РЕНДЕРОМ СТРАНИЦЫ
-  React.useEffect(() => {
-    checkToken();
-  }, []);
-
+  }
   // РАБОТА С ПОПАПАМИ
 
   function handleEditAvatarClick() {
@@ -77,7 +88,7 @@ function App() {
     api
       .setUserInfo({ name: name, about: about })
       .then((userData) => {
-        setUserInfo(userData);
+        setUserInfo(userData.data);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -87,7 +98,7 @@ function App() {
     api
       .newAvatar(avatar)
       .then((res) => {
-        setUserInfo(res);
+        setUserInfo(res.data);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -103,7 +114,7 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     if (isLiked) {
       api
         .delLike(card._id)
@@ -145,41 +156,28 @@ function App() {
     auth
       .authorize(password, email)
       .then((data) => {
-        if (data.token) {
-          setLoggedIn(true);
-          history.push("/");
-          setCurrentUserEmail(email);
-        }
+        setLoggedIn(true);
+        history.push("/");
+        updateUserInfo();
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  // ФУНКЦИЯ ПРОВЕРКИ ТОКЕНА
-
-  function checkToken() {
-    if (localStorage.getItem("jwt")) {
-      const jwt = localStorage.getItem("jwt");
-      auth
-        .checkToken(jwt)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            history.push("/");
-            setCurrentUserEmail(res.data.email);
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  }
 
   // ВЫХОД ИЗ ПРОФИЛЯ
 
   function handleSignOut() {
-    localStorage.removeItem("jwt");
-    history.push("/sign-in");
-    setLoggedIn(false);
-    setCurrentUserEmail("");
+    auth
+      .logOut()
+      .then((res) => {
+        if (res) {
+          history.push("/signin");
+          setLoggedIn(false);
+          setCurrentUserEmail("");
+        }
+      })
+      .catch((err) => console.log(err));
   }
   // РЕГИСТРАЦИЯ
 
@@ -188,8 +186,7 @@ function App() {
       .register(password, email)
       .then((res) => {
         setIsRegisterSuccess(true);
-        console.log(res);
-        history.push("/sign-in");
+        history.push("/signin");
       })
       .catch((err) => {
         console.log(err);
@@ -209,10 +206,10 @@ function App() {
           onSignOut={handleSignOut}
         />
         <Switch>
-          <Route path="/sign-in">
+          <Route path="/signin">
             <Login onSubmit={handleAuthorization} />
           </Route>
-          <Route path="/sign-up" isOpen={isInfoTooltipOpen}>
+          <Route path="/signup" isOpen={isInfoTooltipOpen}>
             <Register onSubmit={handleRegistration} />
           </Route>
           <ProtectedRoute

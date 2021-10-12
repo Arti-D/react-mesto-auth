@@ -19,6 +19,7 @@ class Api {
     return fetch(`${this._url}/cards`, {
       method: "GET",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResponse);
   }
 
@@ -26,6 +27,7 @@ class Api {
     return fetch(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers,
+      credentials: "include"
     }).then(this._checkResponse);
   }
 
@@ -37,6 +39,7 @@ class Api {
         name: data.name,
         link: data.link,
       }),
+      credentials: "include",
     }).then(this._checkResponse);
   }
   
@@ -48,6 +51,7 @@ class Api {
         name: name,
         about: about,
       }),
+      credentials: "include",
     }).then(this._checkResponse);
   }
 
@@ -55,24 +59,27 @@ class Api {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResponse);
   }
 
   addLike(cardId) {
-    return fetch(`${this._url}/cards/likes/${cardId}`, {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: "PUT",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResponse);
   }
 
   delLike(cardId) {
-    return fetch(`${this._url}/cards/likes/${cardId}`, {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: "DELETE",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResponse);
   }
 
-  // 
+  
   newAvatar({ avatar }) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
@@ -80,14 +87,14 @@ class Api {
       body: JSON.stringify({
         avatar: avatar,
       }),
+      credentials: "include",
     }).then(this._checkResponse);
   }
 }
 
 const config = {
-  url: "https://mesto.nomoreparties.co/v1/cohort-22",
+  url: "http://localhost:3001",
   headers: {
-    authorization: "ecd44a5f-5259-4858-9be5-8f874f37b67e",
     "Content-type": "application/json",
   },
 };

@@ -39,7 +39,7 @@ function Register(props) {
 
           <span className="form__question">
             Уже зарегестрированы?
-            <Link className="form__link" to="/sign-in">
+            <Link className="form__link" to="/signin">
               Войти
             </Link>
           </span>
