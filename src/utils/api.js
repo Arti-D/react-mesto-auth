@@ -93,8 +93,9 @@ class Api {
 }
 
 const config = {
-  url: "http://localhost:3001",
+  url: "http://mesto.arti.nomoredomains.club",
   headers: {
+    Accept: "application/json",
     "Content-type": "application/json",
   },
 };

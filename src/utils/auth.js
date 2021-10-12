@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:3001";
+export const BASE_URL = "http://mesto.arti.nomoredomains.club";
 
 export const checkResponse = (res) => {
   if (res.ok) {
@@ -22,7 +22,6 @@ export const authorize = (password, email) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
-      Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ password, email }),

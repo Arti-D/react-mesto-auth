@@ -14,7 +14,6 @@ import api from "../utils/api.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import * as auth from "../utils/auth.js";
-// import { updateAvatar } from "../../../react-mesto-api-full/backend/controllers/users.js";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
