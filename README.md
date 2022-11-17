@@ -18,6 +18,3 @@
 - npm
 
 Все запросы на авторизацию, регистрацию и проверку токена работают через сервис `https://auth.nomoreparties.co`.
-
-# Продолжение
-Данный проект, написанный на React https://github.com/Arti-D/mesto-react
